@@ -80,7 +80,8 @@ class FollowViewSet(viewsets.ModelViewSet):
     Представление для работы с подписками .
     Разрешает просмотр, создание, обновление и удаление подписок.
     Требуется аутентификация пользователя.
-    Поддерживает фильтрацию по имени пользователей, на которых подписан пользователь.
+    Поддерживает фильтрацию по имени
+    пользователей, на которых подписан пользователь.
     """
     serializer_class = FollowSerializer
     permission_classes = (permissions.IsAuthenticated,)
@@ -99,4 +100,3 @@ class FollowViewSet(viewsets.ModelViewSet):
         Устанавливает пользователя в текущего пользователя.
         """
         serializer.save(user=self.request.user)
-
