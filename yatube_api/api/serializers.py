@@ -5,9 +5,8 @@ from posts.models import Comment, Follow, Group, Post, User
 
 
 class PostSerializer(serializers.ModelSerializer):
-    """
-    Сериализатор для модели Post.
-    Включает автора поста по имени пользователя (username).
+    """Сериализатор для модели Post.Включает автора
+        поста по имени пользователя (username).
     """
     author = SlugRelatedField(slug_field="username", read_only=True)
 
@@ -17,9 +16,8 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    """
-    Сериализатор для модели Comment.
-    Включает автора комментария по имени пользователя (username).
+    """Сериализатор для модели Comment.Включает автора
+    комментария по имени пользователя (username).
     """
     author = serializers.SlugRelatedField(
         read_only=True, slug_field="username"
@@ -46,7 +44,8 @@ class FollowSerializer(serializers.ModelSerializer):
     Сериализатор для модели Follow.
     Включает пользователя и пользователя, на которого подписываются.
     Проверяет, что пользователь не может подписываться на самого себя.
-    Применяет валидатор, чтобы проверить, что пользователь не подписан уже на этого пользователя.
+    Применяет валидатор, чтобы проверить, что
+    пользователь не подписан уже на этого пользователя.
     """
     user = serializers.SlugRelatedField(
         queryset=User.objects.all(),
