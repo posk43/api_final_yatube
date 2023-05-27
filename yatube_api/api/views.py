@@ -4,8 +4,10 @@ from rest_framework import filters, permissions, viewsets
 from rest_framework.pagination import LimitOffsetPagination
 from posts.models import Group, Post, Follow
 from api.permissions import IsAuthorOrReadOnly
-from api.serializers import (CommentSerializer, FollowSerializer, GroupSerializer,
-                          PostSerializer)
+from api.serializers import (CommentSerializer,
+                             FollowSerializer,
+                             GroupSerializer,
+                             PostSerializer)
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -76,13 +78,16 @@ class GroupViewSet(viewsets.ReadOnlyModelViewSet):
     )
 
 
-class FollowViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,
-                    mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+class FollowViewSet(mixins.ListModelMixin,
+                    mixins.CreateModelMixin,
+                    mixins.RetrieveModelMixin,
+                    viewsets.GenericViewSet):
     """
     Представление для работы с подписками.
     Разрешает просмотр, создание и получение подписок.
     Требуется аутентификация пользователя.
-    Поддерживает фильтрацию по имени пользователей, на которых подписан пользователь.
+    Поддерживает фильтрацию по имени пользователей
+    на которых подписан пользователь.
     """
     queryset = Follow.objects.all()
     serializer_class = FollowSerializer
