@@ -1,9 +1,10 @@
 from django.shortcuts import get_object_or_404
-from posts.models import Group, Post
+from rest_framework import mixins
 from rest_framework import filters, permissions, viewsets
 from rest_framework.pagination import LimitOffsetPagination
-from .permissions import IsAuthorOrReadOnly
-from .serializers import (CommentSerializer, FollowSerializer, GroupSerializer,
+from posts.models import Group, Post, Follow
+from api.permissions import IsAuthorOrReadOnly
+from api.serializers import (CommentSerializer, FollowSerializer, GroupSerializer,
                           PostSerializer)
 
 
@@ -75,14 +76,15 @@ class GroupViewSet(viewsets.ReadOnlyModelViewSet):
     )
 
 
-class FollowViewSet(viewsets.ModelViewSet):
+class FollowViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,
+                    mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     """
-    Представление для работы с подписками .
-    Разрешает просмотр, создание, обновление и удаление подписок.
+    Представление для работы с подписками.
+    Разрешает просмотр, создание и получение подписок.
     Требуется аутентификация пользователя.
-    Поддерживает фильтрацию по имени
-    пользователей, на которых подписан пользователь.
+    Поддерживает фильтрацию по имени пользователей, на которых подписан пользователь.
     """
+    queryset = Follow.objects.all()
     serializer_class = FollowSerializer
     permission_classes = (permissions.IsAuthenticated,)
     filter_backends = (filters.SearchFilter,)
@@ -91,8 +93,7 @@ class FollowViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         """Получает запрос подписок для текущего пользователя."""
         user = self.request.user
-        new_queryset = user.followers.all()
-        return new_queryset
+        return user.followers.all()
 
     def perform_create(self, serializer):
         """
